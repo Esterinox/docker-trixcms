@@ -24,10 +24,8 @@ services:
     ports:
       - 80:80
     environment: 
-      TRIX_APP_NAME: Trix
       TRIX_APP_LANG: fr 
-      TRIX_APP_URL: http://192.168.97.21
-      TRIX_APP_MAINTENANCE: 0
+      TRIX_APP_URL: http://trixcms.example.com
 
       TRIX_DB_CONNECTION: mysql
       TRIX_DB_HOST: db
@@ -37,12 +35,12 @@ services:
       TRIX_DB_PASSWORD: trix
 
       TRIX_MAIL_DRIVER: smtp
-      TRIX_MAIL_HOST: mail.gnumeria.fr
+      TRIX_MAIL_HOST: mail.example.com
       TRIX_MAIL_PORT: 587
-      TRIX_MAIL_USERNAME: esteban@gnumeria.fr
-      TRIX_MAIL_PASSWORD: xxxxxxxx
+      TRIX_MAIL_USERNAME: admin@trixcms.example.com
+      TRIX_MAIL_PASSWORD: xxxx
       TRIX_MAIL_ENCRYPTION: tls
-      TRIX_MAIL_FROM_ADDRESS: noreply@gnumeria.fr
+      TRIX_MAIL_FROM_ADDRESS: noreply@trixcms.example.com
       TRIX_MAIL_FROM_NAME: TRIX
 
       TRIX_MODULE_PAYMENT: 'true'
