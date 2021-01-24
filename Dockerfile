@@ -9,6 +9,7 @@ RUN \
     apk add apache2 \
     php-apache2 \
     curl \
+    wget \
     php-common \
     php-session \
     php-ctype \
@@ -43,15 +44,6 @@ ADD ${TRIX_DOWNLOAD_IONCUBE} .
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf && \
     sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/httpd.conf && \
     sed -i 's|/var/www/localhost/htdocs|/var/www/html|g' /etc/apache2/httpd.conf
-
-# Ioncube configuration for docker-php before activation
-RUN \
-    tar -xvzf ioncube_loaders_lin_x86-64.tar.gz && \
-    mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so /usr/lib/php7/modules && \
-    rm -rf ioncube_loaders_lin_x86-64.tar.gz && \
-    rm -rf ioncube && \
-    echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_${TRIX_PHP_VERSION}.so' >  /etc/php7/conf.d/00-ioncube.ini
-
 
 # Placement of trixcms and its rights
 RUN \

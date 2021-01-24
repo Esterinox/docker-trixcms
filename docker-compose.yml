@@ -17,13 +17,14 @@ services:
       - db:/var/lib/mysql
 
   trix:
-    image: esterinox/trixcms
+    image: trix-alpine
     networks:
       trix:
         ipv4_address: 172.26.0.2
     ports:
       - 80:80
     environment: 
+      TRIX_ARCH: x86_64
       TRIX_DB_CONNECTION: mysql
       TRIX_DB_HOST: db
       TRIX_DB_PORT: 3306
