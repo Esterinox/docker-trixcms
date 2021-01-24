@@ -1,0 +1,64 @@
+version: '3.4'
+  
+services:
+  db:
+    image: mariadb:latest
+    networks:
+      trix:
+        ipv4_address: 172.26.0.3
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment:
+      MYSQL_ROOT_PASSWORD: trix
+      MYSQL_DATABASE: trix
+      MYSQL_USER: trix
+      MYSQL_PASSWORD: trix
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+
+  trix:
+    image: trix
+    networks:
+      trix:
+        ipv4_address: 172.26.0.2
+    ports:
+      - 80:80
+    environment: 
+      TRIX_APP_NAME: Trix
+      TRIX_APP_LANG: fr 
+      TRIX_APP_URL: http://192.168.97.21
+      TRIX_APP_MAINTENANCE: 0
+
+      TRIX_DB_CONNECTION: mysql
+      TRIX_DB_HOST: db
+      TRIX_DB_PORT: 3306
+      TRIX_DB_DATABASE: trix
+      TRIX_DB_USERNAME: trix
+      TRIX_DB_PASSWORD: trix
+
+      TRIX_MAIL_DRIVER: smtp
+      TRIX_MAIL_HOST: mail.gnumeria.fr
+      TRIX_MAIL_PORT: 587
+      TRIX_MAIL_USERNAME: esteban@gnumeria.fr
+      TRIX_MAIL_PASSWORD: xxxxxxxx
+      TRIX_MAIL_ENCRYPTION: tls
+      TRIX_MAIL_FROM_ADDRESS: noreply@gnumeria.fr
+      TRIX_MAIL_FROM_NAME: TRIX
+
+      TRIX_MODULE_PAYMENT: 'true'
+      TRIX_MODULE_AUTH: 'true'
+
+    restart: always
+    volumes:
+      - trix:/var/www/html
+      
+volumes:
+  trix:
+  db:
+
+networks:
+  trix:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/16
