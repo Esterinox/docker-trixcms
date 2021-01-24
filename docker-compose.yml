@@ -24,7 +24,6 @@ services:
     ports:
       - 80:80
     environment: 
-      TRIX_ARCH: x86_64
       TRIX_DB_CONNECTION: mysql
       TRIX_DB_HOST: db
       TRIX_DB_PORT: 3306
