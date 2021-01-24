@@ -23,11 +23,11 @@ sed -i -e 's|MAIL_FROM_NAME=""|MAIL_FROM_NAME="'${TRIX_MAIL_FROM_NAME}'"|g' .env
 
 sed -i -e 's|MODULE_PAYMENT="true"|MODULE_PAYMENT="'${TRIX_MODULE_PAYMENT}'"|g' .env
 sed -i -e 's|MODULE_AUTH="true"|MODULE_AUTH="'${TRIX_MODULE_AUTH}'"|g' .env
-
 /testdb.sh
 if [ $? -ne 0 ]
 then
   exit 1
 fi
-/usr/local/bin/php artisan migrate --force
-/usr/sbin/apache2ctl -D FOREGROUND
+/usr/bin/php artisan migrate --force
+/usr/sbin/httpd -D FOREGROUND
+
