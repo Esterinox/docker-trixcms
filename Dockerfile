@@ -1,7 +1,6 @@
 FROM alpine:latest
 ENV TRIX_PHP_VERSION=7.4
 ENV TRIX_DOWNLOAD_LINK=https://miroir.gnumeria.fr/downloads/trixcms.zip
-ENV TRIX_DOWNLOAD_IONCUBE=https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 
 # Installation of dependencies
 RUN \
@@ -39,11 +38,27 @@ RUN \
 
 # Download modules and trixcms
 ADD ${TRIX_DOWNLOAD_LINK} /var/www/html/trixcms.zip
-ADD ${TRIX_DOWNLOAD_IONCUBE} .
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf && \
     sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/httpd.conf && \
     sed -i 's|/var/www/localhost/htdocs|/var/www/html|g' /etc/apache2/httpd.conf
+
+# Ioncube configuration for docker-php before activation
+RUN \
+    ARCH_TYPE=$(uname -m) && \
+    if [ $ARCH_TYPE -eq armv7l ]; then wget "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_armv7l.tar.gz" && \
+    tar -xvzf ioncube_loaders_lin_armv7l.tar.gz && \
+    mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so /usr/lib/php7/modules && \
+    rm -rf ioncube_loaders_lin_armv7l.tar.gz && \
+    rm -rf ioncube && \
+    echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_${TRIX_PHP_VERSION}.so' >  /etc/php7/conf.d/00-ioncube.ini ; \
+    else wget "https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz" && \
+    tar -xvzf ioncube_loaders_lin_x86-64.tar.gz && \
+    mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so /usr/lib/php7/modules && \
+    echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_${TRIX_PHP_VERSION}.so' >  /etc/php7/conf.d/00-ioncube.ini && \
+    rm -rf ioncube_loaders_lin_x86-64.tar.gz && \
+    rm -rf ioncube ; \
+    fi
 
 # Placement of trixcms and its rights
 RUN \

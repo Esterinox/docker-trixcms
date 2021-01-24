@@ -1,16 +1,4 @@
 #!/bin/sh
-cd /tmp
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_armv7l.tar.gz
-tar -xzf ioncube_loaders_lin_armv7l.tar.gz && \
-mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so ioncube/ioncube_loader_lin_ARM_${TRIX_PHP_VERSION}.so 
-tar -xzf ioncube_loaders_lin_x86-64.tar.gz
-mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so ioncube/ioncube_loader_lin_x86_64_${TRIX_PHP_VERSION}.so 
-mv ioncube/ioncube_loader_lin_${TRIX_ARCH}_${TRIX_PHP_VERSION}.so /usr/lib/php7/modules && \
-rm -rf ioncube_loaders_lin_x86-64.tar.gz && \
-rm -rf ioncube && \
-echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_${TRIX_ARCH}_${TRIX_PHP_VERSION}.so' >  /etc/php7/conf.d/00-ioncube.ini
-
 cd /var/www/html
 sed -i -e 's|DB_CONNECTION=mysql|DB_CONNECTION='${TRIX_DB_CONNECTION}'|g' .env
 sed -i -e 's|DB_HOST="localhost"|DB_HOST="'${TRIX_DB_HOST}'"|g' .env
