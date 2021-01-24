@@ -17,7 +17,7 @@ services:
       - db:/var/lib/mysql
 
   trix:
-    image: trix-alpine
+    image: esterinox/trixcms
     networks:
       trix:
         ipv4_address: 172.26.0.2
