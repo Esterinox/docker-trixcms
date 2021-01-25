@@ -1,57 +1,57 @@
 FROM alpine:latest
 ENV TRIX_PHP_VERSION=7.4
 ENV TRIX_DOWNLOAD_LINK=https://miroir.gnumeria.fr/downloads/trixcms.zip
-ENV TRIX_DOWNLOAD_IONCUBE=https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 
 # Installation of dependencies
-RUN \
+RUN \ 
     apk update && \
-    apk add apache2 \
-    php-apache2 \
+    apk add \
     curl \
     wget \
-    php-common \
-    php-session \
-    php-ctype \
-    php-bcmath \
-    php7-imagick \
-    php-pdo \
-    php-opcache \
-    php-zip \
-    php-phar \
-    php-iconv \
-    php-cli \
-    php-curl \
-    php-openssl \
-    php-mbstring \
-    php-tokenizer \
-    php-fileinfo \
-    php-json \
-    php-xml \
-    php-xmlwriter \
-    php-simplexml \
-    php-dom \
-    php-pdo_mysql \
-    php-pdo_sqlite \
-    php-tokenizer \
     composer \
-    mysql-client
+    mysql-client \
+    apache2 \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-apache2 \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-common \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-session \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-ctype \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-bcmath \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-imagick \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-pdo \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-opcache \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-zip \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-phar \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-iconv \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-cli \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-curl \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-openssl \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-mbstring \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-tokenizer \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-fileinfo \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-json \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-xml \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-xmlwriter \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-simplexml \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-dom \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-pdo_mysql \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-pdo_sqlite \
+    php$(echo ${TRIX_PHP_VERSION} | cut -c1)-tokenizer
 
 # Download modules and trixcms
 ADD ${TRIX_DOWNLOAD_LINK} /var/www/html/trixcms.zip
-ADD ${TRIX_DOWNLOAD_IONCUBE} .
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/httpd.conf && \
     sed -i 's|AllowOverride None|AllowOverride All|g' /etc/apache2/httpd.conf && \
     sed -i 's|/var/www/localhost/htdocs|/var/www/html|g' /etc/apache2/httpd.conf
 
 # Ioncube configuration for docker-php before activation
+ADD https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz .
 RUN \
     tar -xvzf ioncube_loaders_lin_x86-64.tar.gz && \
-    mv ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so /usr/lib/php7/modules && \
+    cp ioncube/ioncube_loader_lin_${TRIX_PHP_VERSION}.so /usr/lib/php$(echo ${TRIX_PHP_VERSION} | cut -c1)/modules && \
     rm -rf ioncube_loaders_lin_x86-64.tar.gz && \
     rm -rf ioncube && \
-    echo 'zend_extension = /usr/lib/php7/modules/ioncube_loader_lin_${TRIX_PHP_VERSION}.so' >  /etc/php7/conf.d/00-ioncube.ini
+    echo "zend_extension = /usr/lib/php$(echo ${TRIX_PHP_VERSION} | cut -c1)/modules/ioncube_loader_lin_${TRIX_PHP_VERSION}.so" >  /etc/php$(echo ${TRIX_PHP_VERSION} | cut -c1)/conf.d/00-ioncube.ini
 
 # Placement of trixcms and its rights
 RUN \
@@ -78,7 +78,6 @@ RUN \
 RUN \
     unset TRIX_PHP_VERSION && \
     unset TRIX_DOWNLOAD_LINK && \
-    unset TRIX_DOWNLOAD_IONCUBE && \
     rm -rf /var/cache/apk/* && \
     rm -rf /var/www/html/trixcms.zip && \
     rm -rf /tmp/* /var/tmp/*
