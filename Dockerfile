@@ -66,11 +66,11 @@ RUN \
 
 # Installer modification for database support
 RUN \
-    sed -i -e 's/"step2()"/"step3()"/g' /var/www/html/resources/views/Install/home.blade.php && \
-    sed -i -e 's/step_3_header: "Etape 3 :/step_3_header: "Etape 2 :/g' /var/www/html/resources/views/Install/home.blade.php && \
-    sed -i -e 's/step_4_header: "Etape 4 :/step_4_header: "Etape 3 :/g' /var/www/html/resources/views/Install/home.blade.php && \
-    sed -i -e 's/step_3_header: "Step 3 :/step_3_header: "Step 2 :/g' /var/www/html/resources/views/Install/home.blade.php && \
-    sed -i -e 's/step_4_header: "Step 4 :/step_4_header: "Step 3 :/g' /var/www/html/resources/views/Install/home.blade.php && \
+    sed -i -e 's|"step2()"|"step3()"|g' /var/www/html/resources/views/Install/home.blade.php && \
+    sed -i -e 's|step_3_header: "Etape 3 :|step_3_header: "Etape 2 :|g' /var/www/html/resources/views/Install/home.blade.php && \
+    sed -i -e 's|step_4_header: "Etape 4 :|step_4_header: "Etape 3 :|g' /var/www/html/resources/views/Install/home.blade.php && \
+    sed -i -e 's|step_3_header: "Step 3 :|step_3_header: "Step 2 :|g' /var/www/html/resources/views/Install/home.blade.php && \
+    sed -i -e 's|step_4_header: "Step 4 :|step_4_header: "Step 3 :|g' /var/www/html/resources/views/Install/home.blade.php && \
     sed -i -e 's|<li class="step-bar__item"><a href="#" class="step_bdd"></a></li>||' /var/www/html/resources/views/Install/home.blade.php && \
     sed -i -e 's|<li class="step-bar__item step-bar__item_active"><a href="#" class="step_bdd"></a></li>||' /var/www/html/resources/views/Install/home.blade.php
 

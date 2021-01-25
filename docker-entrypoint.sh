@@ -7,7 +7,6 @@ sed -i -e 's|DB_DATABASE="trixcms"|DB_DATABASE="'${TRIX_DB_DATABASE}'"|g' .env
 sed -i -e 's|DB_USERNAME="root"|DB_USERNAME="'${TRIX_DB_USERNAME}'"|g' .env
 sed -i -e 's|DB_PASSWORD=""|DB_PASSWORD="'${TRIX_DB_PASSWORD}'"|g' .env
 
-sed -i -e 's|APP_NAME=TrixCMS|APP_NAME='${TRIX_APP_NAME}'|g' .env
 sed -i -e 's|APP_LANG=""|'${TRIX_APP_LANG}'"|g' .env
 sed -i -e 's|APP_URL=http://localhost|APP_URL='${TRIX_APP_URL}'|g' .env
 sed -i -e 's|APP_MAINTENANCE="1"|APP_MAINTENANCE="'${TRIX_APP_MAINTENANCE}'"|g' .env
